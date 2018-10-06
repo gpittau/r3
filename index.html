@@ -6,8 +6,9 @@
     <title>r3</title>
     <link rel="stylesheet" href="https://rawgit.com/jenil/bulmaswatch/gh-pages/cyborg/bulmaswatch.min.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
-    <link rel="import" href="r3-source.html">
-    <link rel="import" href="r3-output.html">
+    <link rel="import" href="./r3-source.html">
+    <link rel="import" href="./r3-output.html">
+    <link rel="import" href="./r3-watch.html">
     <script src="./compiler.js"></script>
     <script src="./r3www.js"></script>    
 
@@ -233,15 +234,7 @@ function loadex(str) {
   </nav>
 
   <div class="columns">
-    <div class="column is-narrow">
-      <r3-source></r3-source>
-  	  <div class="panel">
-        DATA STACK:<div id="ds"></div>
-        CODE STACK:<div id="cs"></div>
-        IP:<div id="ip"></div>
-        ERR:<div id="logerror"></div>
-  	  </div>
-    </div>
+    <r3-source class="column is-narrow"></r3-source>
 
 		<r3-output class="column"></r3-output>
 
@@ -254,6 +247,7 @@ function loadex(str) {
       DICC:<div id="dic"></div><br>
       MEMDATA:<div id="md"></div><br>
       </div>
+  	  <r3-watch> </r3-watch>
     </div>
   </div>
 	

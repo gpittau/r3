@@ -1,0 +1,18 @@
+<script>
+class r3Watch extends HTMLElement {
+  connectedCallback () {
+    this.render();
+  }
+  render () {
+    this.innerHTML =  `
+  	  <div class="panel">
+        DATA STACK:<div id="ds"></div>
+        CODE STACK:<div id="cs"></div>
+        IP:<div id="ip"></div>
+        ERR:<div id="logerror"></div>
+  	  </div>
+      `;
+  }
+}
+window.customElements.define('r3-watch', r3Watch);
+</script>
