@@ -1,0 +1,33 @@
+<script>
+function domini() {
+  document.getElementById('r3dom').innerHTML="DOM INI";
+  r3domx=-1;
+}
+
+function r3go(a) {
+  r3runa(a);
+  redom();
+}
+function redom() {
+  if (r3domx==-1) { return; }
+  r3echo="";
+  r3runa(r3domx);
+  document.getElementById('r3dom').innerHTML=r3echo;
+}
+
+
+class r3Dom extends HTMLDivElement {
+  constructor () {
+    super();
+    r3domx=-1;
+    const oldreset = window.r3reset;
+    window.r3reset = function () {
+      oldreset();
+      r3echo="";
+      this.innerHTML="";
+    }
+  }
+}
+customElements.define('r3-dom', r3Dom, {extends: "div"});
+
+</script>

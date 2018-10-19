@@ -1,0 +1,73 @@
+<script>
+/*------CANVAS------*/
+var canvas;
+var ctx;
+var imageData;
+var buf8;
+
+function redraw() {
+  imageData.data.set(buf8);ctx.putImageData(imageData,0,0);
+}
+
+function getMouse(evt) {
+  var rect = canvas.getBoundingClientRect();
+  xm = (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width;
+  ym = (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height;
+}
+
+
+/*
+  window.addEventListener('resize', Resize, false);
+// to suppress oncontextmenu because it blocks a mouseup when two buttons are pressed and
+// the right-mouse button is released before the other button.
+//  canvas.addEventListener('contextmenu',function(e) { return false; }, false);
+*/
+ function getWindowStyleButton(e){ var button = 0;
+  if (e) {
+  if (e.button === 0) button = 1;
+  else if (e.button === 1) button = 4;
+  else if (e.button === 2) button = 2;
+  } else if (window.event){ button = window.event.button; }
+  return button;
+  }
+
+function DownMouse(e){ bm = bm | getWindowStyleButton(e); }
+function UpMouse(e){ bm = bm ^ getWindowStyleButton(e); }
+
+function canvasini() {
+  //canvas = document.getElementById('canvas');
+  ctx = canvas.getContext('2d',{alpha:false,preserveDrawingBuffer:true});
+  imageData=ctx.getImageData(0,0,canvas.width, canvas.height);
+  buf8=new Uint8ClampedArray(memdata,0,imageData.data.length);
+
+  meminidata=imageData.data.length;// dinamic???
+
+  //event for var
+  canvas.addEventListener('mousemove', getMouse, false);
+  canvas.addEventListener('mouseenter', getMouse, false);
+
+  canvas.addEventListener('mousedown', DownMouse, false);
+  canvas.addEventListener('mouseup', UpMouse, false);
+  document.addEventListener("keydown", function(event) { ke=event.key;kc=event.code;
+  //event.preventDefault();
+  }, true);
+  document.addEventListener("keyup", function(event) { ke=event.key;kc=event.code;
+  //event.preventDefault();
+  }, true);
+}
+
+class r3Canvas extends HTMLCanvasElement {
+  constructor () {
+    super();
+    window.canvas = this; //I'm the only one!!!
+    canvasini();
+    const oldr3run = window.r3run;
+    window.r3run = function () {
+      oldr3run();
+      redraw();
+    };
+  }
+}
+customElements.define('r3-canvas', r3Canvas, {extends: "canvas"});
+
+</script>

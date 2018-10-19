@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>r3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script src="./compiler.js"></script>
+    <script type="text/r3"></script>
+  </head>
+  <body>
+    <div id="r3dom"></div>
+    <canvas id="canvas"></canvas>
+    <script>
+      runnerChannel.onmessage = ({data: {type, msg}}) => {
+        if (type === "run") {
+          let {srccode, hcanvas, wcanvas} = msg;
+          document.querySelector("script[type='text/r3']").text = srccode;
+          let canvas = document.querySelector("canvas");
+          canvas.width = 512;
+          canvas.height = 512;
+          r3scanrun();
+        }
+      };
+      runnerChannel.postMessage({type: "status", msg: "ready"});
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<script>
+class r3Script extends HTMLScriptElement {
+  constructor () {
+    super();
+  }
+  connectedCallback () {
+    let curr;
+    const src = this.getAttribute("src");
+    if (src) {
+      curr = src;
+    }
+
+    const notEmpty = what => what !== "" && what;
+
+    const deHash = hashed => hashed.slice(1);
+    const hash = !curr && notEmpty(deHash(location.hash));
+    if (hash && hash !== "src") {
+      curr = hash;
+    }
+
+    (async () => {
+      if (/^(http|\.\/)/.test(curr)) {
+        localStorage[curr] = await(await fetch(curr)).text();
+      }
+      const embeded = !curr && notEmpty(this.innerText);
+      if (embeded) {
+        curr = this.getAttribute("id");
+        localStorage[curr] = embeded;
+      }
+
+      //if (curr && r3compilewi(curr) !== 0) {
+      if (curr && r3compile(curr)>-1) {// error
+        return;
+      }
+    })()
+  }
+}
+customElements.define('r3-script', r3Script, {extends: "script"});
+
+</script>
+
+

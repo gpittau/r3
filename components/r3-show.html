@@ -1,0 +1,19 @@
+<script>
+var reqAnimFrame=
+  window.mozRequestAnimationFrame||
+  window.webkitRequestAnimationFrame||
+  window.msRequestAnimationFrame||
+  window.oRequestAnimationFrame;
+
+function animate() {
+  if (r3showx!=-1) {
+    r3runa(r3showx);
+    redraw();
+    reqAnimFrame(animate);
+  }
+}
+
+</script>
+
+
+

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>r3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <link rel="stylesheet" href="./use/bulma.min.css" />
+    <link rel="stylesheet" href="./use/ico.css" />
+
+    <link rel="stylesheet" href="./use/codemirror.css" />
+    <!--  <link rel="stylesheet" href="./use/colorforth.css">  -->
+    <script src="use/codemirror.js"></script>
+
+    <script src="./compiler.js"></script>
+    <script src="./runner.js"></script>
+    <link rel="import" href="./components/r3-error.html">
+    <link rel="import" href="./components/r3-editor.html">
+    <link rel="import" href="./components/r3-script.html">
+    <style>
+      #testarea {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="testarea">
+      <span is="r3-error" id="logerror"></span>
+      <div is="r3-editor" item="src"></div>
+      <script is="r3-script" type="text/r3">hola amigos</script>
+    </div>
+    <script>
+      const getHash = ({location:{hash: [_, ...cleanHash]}}) => cleanHash.join("");
+      window.onhashchange = () => {editor.item = getHash(window);}
+      const hash = getHash(window);
+      if(hash !== "") {
+        r3Editor.item = hash;
+      }
+
+    </script>
+  </body>
+</html>

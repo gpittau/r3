@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>r3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <link rel="import" href="./components/r3-runner.html">
+    <link rel="import" href="./components/r3-canvas.html">
+    <link rel="import" href="./components/r3-dom.html">
+    <link rel="import" href="./components/r3-show.html">
+    <link rel="import" href="./components/r3-script.html">
+  </head>
+  <body>
+    <r3-runner autorun>
+      <div id="r3dom" is="r3-dom"></div>
+      <canvas id="canvas" is="r3-canvas" width="512" height="512"></canvas>
+      <script type="text/r3" is="r3-script"></script>
+    </r3-runner>
+  </body>
+</html>

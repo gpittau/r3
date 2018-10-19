@@ -1,0 +1,60 @@
+<template id="editor-template">
+</template>
+
+<script>
+  var editor;
+  const debounce = (what, milisecs) => {
+    let timeout;
+
+    return function() {
+      const fcall = () => what.apply(this, arguments);
+
+      clearTimeout(timeout);
+      timeout = setTimeout(fcall, milisecs);
+    }
+  };
+
+const withOwnerDocument = what => what(document.currentScript.ownerDocument);
+const r3EditorFactory = withOwnerDocument(document => base =>
+  class extends base {
+    constructor () {
+      super();
+      window.r3Editor = this;
+      window.editor = CodeMirror(this, {
+        mode: "text/html",
+        lineNumbers: true,
+        styleActiveLine: true,
+        autofocus:true,
+        //  theme:"colorforth"
+      });
+
+      editor.setSize("100%","100%");
+
+      this.onChange = debounce(editor => localStorage[this.item] = editor.getValue(), 2000);
+    }
+
+    static get observedAttributes() { return ["item"]; }
+    get item () {return this.getAttribute("item")}
+    set item (itemName) {
+      this.loadItem(itemName).then(_ => this.setAttribute("item", itemName))
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+      if(name !== "item" || oldValue === newValue) { return; }
+      if(oldValue !== null) {
+        editor.off("change", this.onChange);
+        localStorage[oldValue] = editor.getValue();
+      }
+      editor.setValue(localStorage[newValue] || "");
+      editor.on("change", this.onChange);
+    }
+    //  Examples
+    //----------------------------------------------------
+    async loadItem(item) {
+      if(!localStorage[item])
+        localStorage[item] = await(await fetch(item)).text();
+    }
+  }
+);
+customElements.define('r3-editor', r3EditorFactory(HTMLDivElement), {extends: "div"});
+</script>
+
