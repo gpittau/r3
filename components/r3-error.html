@@ -1,20 +1,21 @@
 <script>
-var r3Error;
+function error() {}
 const R3ErrorElement = class extends HTMLSpanElement {
   constructor () {
     super();
-    window.r3Error = this;
+    window.error = (({error:old}) => (...args) => {
+      if(args.length === 0) {
+        this.innerText = "OK";
+        return;
+      }
+      const [str, now] = args;
+      nowerror=now;
+      const n2=now;
+      let n1=now-2;
+      while (str.charCodeAt(n1)>32) {n1--;}
+      this.innerText = "Not Word :"+str.slice(n1,n2);
+    })(window);
   }
-
-  show (str,now) {
-    nowerror=now;
-    const n2=now;
-    let n1=now-2;
-    while (str.charCodeAt(n1)>32) {n1--;}
-    this.innerText = "Not Word :"+str.slice(n1,n2);
-  }
-
-  clear () { this.innerText = ""; }
 };
 
 customElements.define('r3-error', R3ErrorElement, {extends: "span"});

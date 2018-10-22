@@ -260,7 +260,7 @@ function r3token(name = "src") {
           compilaDATA(ntoken);break;
         case 0x27:// $27 ' Direccion  // 'ADR
           ntoken=ntoken.substr(1).toUpperCase();
-          nro=isWord(ntoken);if (nro<0) { r3Error.show(str,now);return 2; }
+          nro=isWord(ntoken);if (nro<0) { error(str,now);return 2; }
           compilaADDR(nro);break;
         default:
           ntoken=ntoken.toUpperCase();
@@ -268,7 +268,7 @@ function r3token(name = "src") {
             compilaLIT(nro);break; }
           if (isBas(ntoken)) {
             compilaMAC(nro);break; }
-          nro=isWord(ntoken);if (nro<0) { r3Error.show(str,now);return 1; }
+          nro=isWord(ntoken);if (nro<0) { error(str,now);return 1; }
           compilaWORD(nro);
           break;
         }
@@ -341,7 +341,7 @@ function r3compile(name = "src") {
 
 // last tokenizer
   if (r3token(name)!=0) return nowerror;
-  r3Error.clear();
+  error();
   return -1;
   }
 
@@ -357,8 +357,24 @@ function r3compilewi(name = "src") {
 
 // last tokenizer
   if (r3token(name)!=0) return nowerror;
-  r3Error.clear();
+  error();
   return -1;
 
   }
 
+function error(...args) {
+    const logerror = document.getElementById("logerror");
+    if(args.length === 0) {
+      if(logerror) logerror.innerText = "OK";
+      return;
+    }
+    nowerror=now;
+    var n2=now;
+    var n1=now-2;while (str.charCodeAt(n1)>32) {n1--;}
+    const msg = "Not Word :"+str.slice(n1,n2);
+    if(logerror) {
+      logerror.innerText = msg;
+      return;
+    }
+    alert(msg);
+    }
