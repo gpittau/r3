@@ -30,14 +30,25 @@
     while(ip!=0) { r3op(memcode[ip++]); }
   }
 
-  function r3Run() {
+  function interceptable (func) {
+    const {name} = func;
+    window[name] = func;
+    window[name].intercept = function(interceptor) {
+      window[name] = function (...args) {
+        return interceptor.bind(this, func, args)();
+      };
+    };
+  }
+
+
+  interceptable(function r3Run() {
     r3compile();
     r3reset();
     r3run();
     redraw();
     dumpVM();
     document.getElementById("r3dom").innerHTML=r3echo;
-  }
+  });
 
   function r3Compile() {
     let src = localStorage.getItem(r3source);

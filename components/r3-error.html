@@ -15,7 +15,7 @@ const R3ErrorElement = class extends HTMLSpanElement {
       this.innerText = "Not Word :"+str.slice(n1,n2);
     };
 
-    window.r3Run = (({r3Run:old}) => (...args) => {
+    r3Run.intercept(function(old, args) {
       try {
         clear();
         old(...args);
@@ -24,7 +24,7 @@ const R3ErrorElement = class extends HTMLSpanElement {
         error(str, now);
         dumpVM();
       }
-    })(window);
+    });
   }
 };
 
