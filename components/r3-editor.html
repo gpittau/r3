@@ -36,8 +36,13 @@ const r3EditorFactory = withOwnerDocument(document => base =>
     static get observedAttributes() { return ["item"]; }
     get item () {return this.getAttribute("item")}
     set item (itemName) {
-      this.loadItem(itemName).then(_ => this.setAttribute("item", itemName))
+      const changeTo = _ => {
+        r3source = itemName;
+        this.setAttribute("item", itemName);
+      };
+      this.loadItem(itemName).then(changeTo);
     }
+
     attributeChangedCallback(name, oldValue, newValue) {
       if(name !== "item" || oldValue === newValue) { return; }
       if(oldValue !== null) {

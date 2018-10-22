@@ -3,17 +3,27 @@ function error() {}
 const R3ErrorElement = class extends HTMLSpanElement {
   constructor () {
     super();
-    window.error = (({error:old}) => (...args) => {
-      if(args.length === 0) {
-        this.innerText = "OK";
-        return;
-      }
-      const [str, now] = args;
+    const clear = () => {
+      this.innerText = "OK";
+    };
+
+    const error = (str, now) => {
       nowerror=now;
       const n2=now;
       let n1=now-2;
       while (str.charCodeAt(n1)>32) {n1--;}
       this.innerText = "Not Word :"+str.slice(n1,n2);
+    };
+
+    window.r3Run = (({r3Run:old}) => (...args) => {
+      try {
+        clear();
+        old(...args);
+      }catch({now, name}) {
+        const str = localStorage[name];
+        error(str, now);
+        dumpVM();
+      }
     })(window);
   }
 };

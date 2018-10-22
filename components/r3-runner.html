@@ -31,11 +31,7 @@
   }
 
   function r3Run() {
-    localStorage.setItem("src", editor.getValue("\n"));
-    if (r3compile()>-1) {// error
-      dumpVM();
-      return;
-      }
+    r3compile();
     r3reset();
     r3run();
     redraw();
@@ -44,8 +40,7 @@
   }
 
   function r3Compile() {
-    localStorage.setItem("src", editor.getValue("\n"));
-    let src = localStorage.getItem("src");
+    let src = localStorage.getItem(r3source);
     var cc=r3compile();
     if (cc>-1) {
     var i,ll=0;lin=0;
@@ -60,8 +55,7 @@
 
   var runnerWindow;
   function playintab() {
-    localStorage.setItem("src", editor.getValue("\n"));
-    let src = localStorage.getItem("src");
+    let src = localStorage.getItem(r3source);
     r3includes();
     let presource=includes.map(inc=>localStorage.getItem(inc)).join("");
     localStorage.setItem("runable", `${presource+"\n"}${src}`);
@@ -69,7 +63,7 @@
     runnerWindow = runnerWindow && !runnerWindow.closed;
     const {location} = runnerWindow || window.open("r3-runner-window");
     const href = "./runner.html";
-    const hash = "src";
+    const hash = r3source;
     location.replace(`${href}#${hash}`);
   }
 
@@ -80,7 +74,7 @@
       connectedCallback () {
         const type = this.getAttribute("type");
         const handlers = {
-          run: r3Run,
+          run: () => r3Run(),
           playintab: playintab,
           compile: r3Compile,
           step: () => {r3step();dumpVM();redraw();}

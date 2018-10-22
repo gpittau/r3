@@ -221,8 +221,8 @@ function compilaWORD(n) {
   if (modo>1) { datanro(n);return; }
   codetok((dicca[n]<<7)+12+((dicci[n]>>4)&1));
   }
-
-function r3token(name = "src") {
+var r3source = "src";
+function r3token(name = r3source) {
   let str = localStorage.getItem(name);
 
   level=0;
@@ -260,7 +260,7 @@ function r3token(name = "src") {
           compilaDATA(ntoken);break;
         case 0x27:// $27 ' Direccion  // 'ADR
           ntoken=ntoken.substr(1).toUpperCase();
-          nro=isWord(ntoken);if (nro<0) { error(str,now);return 2; }
+          nro=isWord(ntoken);if (nro<0) { throw {name,now}; }
           compilaADDR(nro);break;
         default:
           ntoken=ntoken.toUpperCase();
@@ -268,7 +268,7 @@ function r3token(name = "src") {
             compilaLIT(nro);break; }
           if (isBas(ntoken)) {
             compilaMAC(nro);break; }
-          nro=isWord(ntoken);if (nro<0) { error(str,now);return 1; }
+          nro=isWord(ntoken);if (nro<0) { throw {name,now}; }
           compilaWORD(nro);
           break;
         }
@@ -280,7 +280,7 @@ function r3token(name = "src") {
   }
 
 
-function r3includes(name = "src") {
+function r3includes(name = r3source) {
   var now=0;
   var ini;
   let str = localStorage.getItem(name);
@@ -317,7 +317,7 @@ function r3includes(name = "src") {
 
 var nowerror=0;
 
-function r3compile(name = "src") {
+function r3compile(name = r3source) {
   includes.splice(0,includes.length);
 
 // load includes
@@ -335,17 +335,16 @@ function r3compile(name = "src") {
 
 // tokenize
   for (var i=0;i<includes.length;i++) {
-    if (r3token(includes[i])) return nowerror;
+    r3token(includes[i]);
     dicclocal=dicc.length;
-    }
-
-// last tokenizer
-  if (r3token(name)!=0) return nowerror;
-  error();
-  return -1;
   }
 
-function r3compilewi(name = "src") {
+// last tokenizer
+  r3token(name);
+  return -1;
+}
+
+function r3compilewi(name = r3source) {
   dicc.splice(0,dicc.length);
   dicca.splice(0,dicca.length);
   dicci.splice(0,dicci.length);
@@ -356,11 +355,10 @@ function r3compilewi(name = "src") {
   memd=meminidata;
 
 // last tokenizer
-  if (r3token(name)!=0) return nowerror;
-  error();
+  r3token(name);
   return -1;
 
-  }
+}
 
 function error(...args) {
     const logerror = document.getElementById("logerror");

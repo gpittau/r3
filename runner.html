@@ -10,8 +10,12 @@
     <link rel="import" href="./components/r3-dom.html">
     <link rel="import" href="./components/r3-show.html">
     <link rel="import" href="./components/r3-script.html">
+    <link rel="import" href="./components/r3-runner.html">
   </head>
   <body>
+    <button is="r3-runner-button" type="run" class="button is-success">
+      <i class="ico icon-play"></i>
+    </button>
     <r3-runner autorun>
       <div id="r3dom" is="r3-dom"></div>
       <canvas id="canvas" is="r3-canvas" width="512" height="512"></canvas>
